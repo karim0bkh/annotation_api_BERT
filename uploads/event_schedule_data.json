@@ -1,0 +1,201 @@
+{
+  "examples": [
+    {
+      "id": "ca-1",
+      "content": "Schedule a calendar event in Teak oaks HOA about competitions happening tomorrow",
+      "annotations": [
+        {
+          "start": 0,
+          "end": 7,
+          "tag_name": "action"
+        },
+        {
+          "start": 11,
+          "end": 24,
+          "tag_name": "domain"
+        },
+        {
+          "start": 29,
+          "end": 41,
+          "tag_name": "hoa"
+        },
+        {
+          "start": 49,
+          "end": 70,
+          "tag_name": "event"
+        },
+        {
+          "start": 72,
+          "end": 79,
+          "tag_name": "date"
+        }
+      ]
+    },
+    {
+      "id": "ca-3",
+      "content": "Schedule Pongal celebration event in Oaks HOA at June 20, 2023",
+      "annotations": [
+        {
+          "start": 0,
+          "end": 7,
+          "tag_name": "action"
+        },
+        {
+          "start": 28,
+          "end": 32,
+          "tag_name": "domain"
+        },
+        {
+          "start": 37,
+          "end": 44,
+          "tag_name": "hoa"
+        },
+        {
+          "start": 9,
+          "end": 32,
+          "tag_name": "event"
+        },
+        {
+          "start": 49,
+          "end": 61,
+          "tag_name": "date"
+        }
+      ]
+    },
+    {
+      "id": "ca-4",
+      "content": "Create event happening tomorrow on AI",
+      "annotations": [
+        {
+          "start": 0,
+          "end": 5,
+          "tag_name": "action"
+        },
+        {
+          "start": 7,
+          "end": 11,
+          "tag_name": "domain"
+        },
+        {
+          "start": 35,
+          "end": 36,
+          "tag_name": "event"
+        },
+        {
+          "start": 23,
+          "end": 30,
+          "tag_name": "date"
+        }
+      ]
+    },
+    {
+      "id": "ca-5",
+      "content": "Schedule event for visit to Trivandrum on July 18",
+      "annotations": [
+        {
+          "start": 0,
+          "end": 7,
+          "tag_name": "action"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "tag_name": "domain"
+        },
+        {
+          "start": 19,
+          "end": 37,
+          "tag_name": "event"
+        },
+        {
+          "start": 42,
+          "end": 48,
+          "tag_name": "date"
+        }
+      ]
+    },
+    {
+      "id": "ca-8",
+      "content": "Could you please reserve some time on calendar for a team brainstorming session on Friday at 10 a.m.?",
+      "annotations": [
+        {
+          "start": 17,
+          "end": 23,
+          "tag_name": "action"
+        },
+        {
+          "start": 38,
+          "end": 45,
+          "tag_name": "domain"
+        },
+        {
+          "start": 53,
+          "end": 78,
+          "tag_name": "event"
+        },
+        {
+          "start": 83,
+          "end": 99,
+          "tag_name": "date"
+        }
+      ]
+    },
+    {
+      "id": "ca-10",
+      "content": "I want to invite everyone to a training session next week Thursday",
+      "annotations": [
+        {
+          "start": 10,
+          "end": 15,
+          "tag_name": "action"
+        },
+        {
+          "start": 40,
+          "end": 46,
+          "tag_name": "domain"
+        },
+        {
+          "start": 31,
+          "end": 46,
+          "tag_name": "event"
+        },
+        {
+          "start": 48,
+          "end": 65,
+          "tag_name": "date"
+        }
+      ]
+    },
+    {
+      "id": "ca-13",
+      "content": "I'm organizing a team-building event. Let's schedule it for next week Friday afternoon",
+      "annotations": [
+        {
+          "start": 4,
+          "end": 13,
+          "tag_name": "action"
+        },
+        {
+          "start": 44,
+          "end": 51,
+          "tag_name": "action"
+        },
+        {
+          "start": 31,
+          "end": 35,
+          "tag_name": "domain"
+        },
+        {
+          "start": 17,
+          "end": 29,
+          "tag_name": "event"
+        },
+        {
+          "start": 60,
+          "end": 75,
+          "tag_name": "date"
+        }
+      ]
+    }
+  ]
+}
