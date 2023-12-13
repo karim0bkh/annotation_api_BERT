@@ -77,17 +77,18 @@ def train_model_endpoint():
 
         # Fetch files based on user_id and flag
         files = Files.query.filter_by(user_id=user_id, flag=1).all()
-
+        print(files[0].annotations)
         training_data = []
         for file_data in files:
-            for example in file_data.annotations['examples']:
-                temp_dict = {'text': example['content'], 'entities': []}
-                for annotation in example['annotations']:
-                    start = annotation['start']
-                    end = annotation['end'] + 1
-                    label = annotation['tag_name'].upper()
-                    temp_dict['entities'].append((start, end, label))
-                training_data.append(temp_dict)
+            temp_dict = {'text': file_data.annotations['content'], 'entities': []}
+            for annotation in file_data.annotations['annotations']:
+                start = annotation['start']
+                end = annotation['end'] + 1
+                label = annotation['tag_name'].upper()
+                temp_dict['entities'].append((start, end, label))
+            training_data.append(temp_dict)
+
+
 
         # Save training data to the database
         
