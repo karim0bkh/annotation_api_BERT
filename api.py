@@ -10,16 +10,23 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://username:password@localhost:5432/database_name'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:karim@localhost:5432/annotation'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
 class TrainingData(db.Model):
-    id = db.Column(db.String, primary_key=True)
-    user_id = db.Column(db.String, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
     model_info = db.Column(db.JSON, nullable=True) 
-    model_id = db.Column(db.String, nullable=False)
+    model_id = db.Column(db.UUID, nullable=False)
+
+class Files(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.BigInteger)
+    file_name = db.Column(db.String)
+    flag = db.Column(db.Integer)
+    annotations = db.Column(db.JSON)
 
 models_info = {}
 
@@ -40,9 +47,9 @@ def create_model_endpoint():
 
         # Save model information to the database
         new_model_data = TrainingData(
-            id=str(uuid.uuid4()),
             user_id=user_id,
-            model_id=folder_name
+            model_id=folder_name,
+            model_info=json.dumps(models_info[folder_name])
         )
         db.session.add(new_model_data)
         db.session.commit()
@@ -64,35 +71,26 @@ def train_model_endpoint():
             return jsonify({'error': 'Model not found for the specified user_id.'}), 404
 
         folder_name = model_data.model_id
-        output_folder = os.path.join('models', folder_name)
+        output_folder = os.path.join('models', str(folder_name))
 
         nlp = spacy.load("en_core_web_lg")
 
+        # Fetch files based on user_id and flag
+        files = Files.query.filter_by(user_id=user_id, flag=1).all()
+
         training_data = []
-        for file_info in data.get('files', []):
-            file_path = os.path.join('uploads', file_info['file_name'])
-            with open(file_path, 'r') as file:
-                file_data = json.load(file)
-                for example in file_data['examples']:
-                    temp_dict = {'text': example['content'], 'entities': []}
-                    for annotation in example['annotations']:
-                        start = annotation['start']
-                        end = annotation['end'] + 1
-                        label = annotation['tag_name'].upper()
-                        temp_dict['entities'].append((start, end, label))
-                    training_data.append(temp_dict)
+        for file_data in files:
+            for example in file_data.annotations['examples']:
+                temp_dict = {'text': example['content'], 'entities': []}
+                for annotation in example['annotations']:
+                    start = annotation['start']
+                    end = annotation['end'] + 1
+                    label = annotation['tag_name'].upper()
+                    temp_dict['entities'].append((start, end, label))
+                training_data.append(temp_dict)
 
         # Save training data to the database
-        for training_example in training_data:
-            new_training_data = TrainingData(
-                id=str(uuid.uuid4()),
-                user_id=user_id,
-                model_id=folder_name
-            )
-            db.session.add(new_training_data)
-
-        db.session.commit()
-
+        
         doc_bin = DocBin()
         for training_example in training_data:
             text = training_example['text']
@@ -124,12 +122,14 @@ def train_model_endpoint():
 def inference_endpoint():
     try:
         data = request.json
-        folder_name = data.get('folder_name')
+        user_id = data.get('user_id')
 
-        if folder_name not in models_info or models_info[folder_name]['status'] != 'trained':
-            return jsonify({'error': 'Model not found or not trained.'}), 404
+        # Fetch the model folder name based on user_id
+        model_data = TrainingData.query.filter_by(user_id=user_id).first()
 
-        output_folder = os.path.join('models', folder_name)
+        
+        folder_name = model_data.model_id
+        output_folder = os.path.join('models', str(folder_name))
         nlp_ner = spacy.load(os.path.join(output_folder, "model-best"))
 
         text = data.get('text', '')
